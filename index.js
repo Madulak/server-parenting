@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const MONGO_URI = 'mongodb://localhost/parenting?retryWrites=true';
+const MONGO_ONLINE = 'mongodb+srv://palazo:TnSErsEnQ7a6m4T@cluster0.0pe5b.mongodb.net/parenting';
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use(postRoutes);
 
-mongoose.connect(MONGO_URI, { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect(MONGO_ONLINE, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(result => {
     app.listen(8080);
     console.log('[SERVER RUNNING!]')

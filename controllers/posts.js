@@ -80,7 +80,7 @@ exports.deletePost = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const postDoc = await Post.findById({_id:id}).exec();
+    const postDoc = await Post.findByIdAndRemove(id).exec();
     console.log('[POST DOC]', postDoc)
     res.status(200).json({message: '[Post Deleted] ', post: postDoc});
   } catch (err) {
