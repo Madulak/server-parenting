@@ -1,12 +1,49 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 const User = require('../models/user');
+const AWS = require('aws-sdk');
 
 exports.postNewPost = async (req, res, next) => {
   const { postText } = req.body;
   const userId = req.userId;
 
+  console.log('[BODY UP] ',req.body);
+  console.log('[FILE] ', req.file);
+
+  const access_key = 'AKIART26WC3YLN4KYKF6';
+  const secret_key = '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';
+
   try {
+
+    const s3 = new AWS.S3({
+        accessKeyId: access_key,
+        secretAccessKey: secret_key
+    });
+
+    const params = {
+        Bucket: 'images1001',
+        Key: req.file.filename, // File name you want to save as in S3
+        Body: req.file.path
+    };
+    let ur;
+    // Uploading files to the bucket
+    s3.upload(params, function(err, data) {
+        if (err) {
+            throw err;
+        }
+        console.log(`File uploaded successfully. ${data.Location}`);
+        ur = data.Location
+    });
+
+    var params2 = {Bucket: 'bucket', Key: 'key'};
+    s3.getSignedUrl('putObject', params2, function (err, url) {
+      console.log('The URL is', url);
+    });
+
+    // var promise = s3.getSignedUrlPromise('putObject', params);
+    //   promise.then(function(url) {
+    //   console.log('The URL is ', url);
+    // }, function(err) { console.log('[Error] ', err)})
 
     const newPost = new Post({
       postText: postText,
