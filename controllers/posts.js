@@ -10,8 +10,8 @@ exports.postNewPost = async (req, res, next) => {
   console.log('[BODY UP] ',req.body);
   console.log('[FILE] ', req.file);
 
-  const access_key = 'AKIART26WC3YLN4KYKF6';
-  const secret_key = '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';
+  const access_key = process.env.AWS_ACCESS_KEY;
+  const secret_key = process.env.AWS_SECRET_KEY;
 
   try {
 
